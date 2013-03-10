@@ -84,4 +84,4 @@ stationWeather$diff <- stationWeather[['FALSE']] - stationWeather[['TRUE']]
 stationWeather$normedDiff <- stationWeather$diff / stationWeather[['FALSE']]
 stationWeather <- stationWeather[order(stationWeather$normedDiff),]
 
-write.csv(stationWeather, 'stationWeatherDiff.csv')
+write.csv(stationWeather, '../stationWeatherDiff.csv')
