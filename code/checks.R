@@ -8,13 +8,16 @@ write.csv(sorted, '../resultsSorted.csv',row.names=FALSE)
 
 sorted$date <- as.Date(sorted$day)
 
-daily <- aggregate(entries ~ day, data=raw, FUN="sum")
-daily$date <- as.Date(daily$day)
+sorted$day <- format(sorted$date,"%A")
+sorted$day[!sorted$day %in% c("Saturday","Sunday")] <- "Weekday"
 
-daily$day <- NULL
+daily <- aggregate(entries ~ date, data=sorted, FUN="sum")
+daily$day <- format(daily$date,"%A")
+daily$day[!daily$day %in% c("Saturday","Sunday")] <- "Weekday"
+with(daily, qplot(date, entries, colour=day)) + theme_bw()
 
-write.csv(daily, '../resultsDaily.csv', row.names=FALSE)
 
+#write.csv(daily, '../resultsDaily.csv', row.names=FALSE)
 with(daily, plot(date, entries))
 
 with(subset(sorted, Station=="BEDFORD AVE"), plot(date, entries))
@@ -23,6 +26,14 @@ with(subset(sorted, Station=="111 ST"), plot(date, entries))
 with(subset(sorted, Station=="DITMARS BL-31 S"), plot(date, entries))
 with(subset(sorted, Station=="28 ST"), plot(date, entries))
 with(subset(sorted, Station=="CARROLL ST"), plot(date, entries, pch=19, cex=0.4, col="blue"))
+with(subset(sorted, Station=="NASSAU AV"), plot(date, entries, pch=19, cex=0.4, col="blue"))
+
+library(ggplot2)
+with(subset(sorted, Station=="NASSAU AV"), qplot(date, entries, colour=day)) + theme_bw()
+with(subset(sorted, Station=="W 4 ST-WASH SQ"), qplot(date, entries, colour=day)) + theme_bw()
+with(subset(sorted, Station=="CARROLL ST"), qplot(date, entries, colour=day)) + theme_bw()
+with(subset(sorted, Station=="W 4 ST-WASH SQ"), qplot(date, entries, colour=day)) + theme_bw()
+with(subset(sorted, Station=="BEDFORD AVE"), qplot(date, entries, colour=day)) + theme_bw()
 
 
 # heavy snow days
@@ -85,3 +96,5 @@ stationWeather$normedDiff <- stationWeather$diff / stationWeather[['FALSE']]
 stationWeather <- stationWeather[order(stationWeather$normedDiff),]
 
 write.csv(stationWeather, '../stationWeatherDiff.csv')
+
+write.csv(data.frame(day=weatherDates), '../weatherDays.csv', row.names=FALSE)
