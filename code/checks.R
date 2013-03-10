@@ -3,7 +3,7 @@ test <- read.csv('../turnstile2/turnstile_120428.txt', header=FALSE)
 test2 <- read.csv('../turnstile2/turnstile_110402.txt', header=FALSE)
 
 raw <- read.csv('../results.csv')
-sorted <- raw[order(raw$Station, raw$day),]
+sorted <- raw[order(raw$Station, raw$Line.Name, raw$day),]
 write.csv(sorted, '../resultsSorted.csv',row.names=FALSE)
 
 sorted$date <- as.Date(sorted$day)
@@ -81,7 +81,7 @@ precip <- c('20100503', '20100822', '20100927', '20101001', '20101011',
  '20120918', '20120928', '20121107', '20130208', '20130227')
 
 # heat waves
-we've got two heat waves:
+# we've got two heat waves:
 heat <- c('20100829','20100830','20100831','20100901','20100902',
 '20120704','20120705','20120706','20120707','20120708')
 
@@ -90,7 +90,7 @@ weather <- unique(weather)
 weatherDays <- as.Date(weather, format="%Y%m%d")
 
 sorted$weather <- sorted$date %in% weatherDays
-stationWeather <- as.data.frame(t(with(sorted, tapply(entries, list(weather, Station), FUN="mean"))))
+stationWeather <- as.data.frame(t(with(sorted, tapply(entries, list(weather, stationfull), FUN="mean"))))
 stationWeather$diff <- stationWeather[['FALSE']] - stationWeather[['TRUE']]
 stationWeather$normedDiff <- stationWeather$diff / stationWeather[['FALSE']]
 stationWeather <- stationWeather[order(stationWeather$normedDiff),]
@@ -98,3 +98,8 @@ stationWeather <- stationWeather[order(stationWeather$normedDiff),]
 write.csv(stationWeather, '../stationWeatherDiff.csv')
 
 write.csv(data.frame(day=weatherDates), '../weatherDays.csv', row.names=FALSE)
+
+ford3 <- daily[,c("date","entries")]
+names(ford3) <- c("Date","entries")
+ford3$Date <- as.character(ford3$Date)
+write.csv(ford3, '../subway.csv', row.names=FALSE, quote=FALSE)

@@ -48,8 +48,8 @@ names(t) <- c("control_area", "unit", "scp", "day", "entries")
 
 u <- merge(t, stations, by.x=c("unit", "control_area"), by.y=c("Remote", "Booth"))
 
-results <- aggregate(entries ~ Station + day, data=u, FUN="sum")
+results <- aggregate(entries ~ Station + Line.Name + day, data=u, FUN="sum")
 
-  write.csv(results, paste('../turnstile3/',i,'.csv',sep=''), row.names=FALSE)
+  write.csv(results, paste('../turnstile3a/',i,'.csv',sep=''), row.names=FALSE)
 
 }
