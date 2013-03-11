@@ -14,7 +14,7 @@ sorted$day[!sorted$day %in% c("Saturday","Sunday")] <- "Weekday"
 daily <- aggregate(entries ~ date, data=sorted, FUN="sum")
 daily$day <- format(daily$date,"%A")
 daily$day[!daily$day %in% c("Saturday","Sunday")] <- "Weekday"
-with(daily, qplot(date, entries, colour=day)) + theme_bw()
+with(daily, qplot(date, entries, colour=day)) + theme_bw() + scale_colour_manual(values = c("#ffff00","#7cfc00","#000080"))
 
 
 #write.csv(daily, '../resultsDaily.csv', row.names=FALSE)
@@ -29,11 +29,11 @@ with(subset(sorted, Station=="CARROLL ST"), plot(date, entries, pch=19, cex=0.4,
 with(subset(sorted, Station=="NASSAU AV"), plot(date, entries, pch=19, cex=0.4, col="blue"))
 
 library(ggplot2)
-with(subset(sorted, Station=="NASSAU AV"), qplot(date, entries, colour=day)) + theme_bw()
+with(subset(sorted, Station=="NASSAU AV"), qplot(date, entries, colour=day)) + theme_bw() + scale_colour_manual(values = c("#ffff00","#7cfc00","#000080"))
 with(subset(sorted, Station=="W 4 ST-WASH SQ"), qplot(date, entries, colour=day)) + theme_bw()
-with(subset(sorted, Station=="CARROLL ST"), qplot(date, entries, colour=day)) + theme_bw()
+with(subset(sorted, Station=="CARROLL ST"), qplot(date, entries, colour=day)) + theme_bw() + scale_colour_manual(values = c("#ffff00","#7cfc00","#000080"))
 with(subset(sorted, Station=="W 4 ST-WASH SQ"), qplot(date, entries, colour=day)) + theme_bw()
-with(subset(sorted, Station=="BEDFORD AVE"), qplot(date, entries, colour=day)) + theme_bw()
+with(subset(sorted, Station=="BEDFORD AVE"), qplot(date, entries, colour=day)) + theme_bw() + scale_colour_manual(values = c("#ffff00","#7cfc00","#000080"))
 
 
 # heavy snow days
